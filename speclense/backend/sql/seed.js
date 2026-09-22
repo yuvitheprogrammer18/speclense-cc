@@ -53,7 +53,7 @@ const products = [
     }
 
     for (const p of products) {
-      const slug = p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      const slug = p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-₹)/g, '');
       await pool.query(
         `INSERT IGNORE INTO products
          (name, slug, category_id, description, price, compare_at_price, frame_color, lens_tint, stock, image_url, is_featured)
