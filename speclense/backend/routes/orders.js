@@ -4,9 +4,10 @@ const { requireAuth } = require('../middleware/auth');
 
 const router = express.Router();
 
-// 1. Place an order from the cart (Initial status: pending)
+// 1. Place an order from the cart
 router.post('/', requireAuth, async (req, res) => {
-  const { items, shipping } = req.body; // items: [{ productId, quantity }]
+  // Extract paymentMethod from the request, default to 'COD' if not provided
+  const { items, shipping, paymentMethod = 'COD' } = req.body;
   
   if (!Array.isArray(items) || !items.length) {
     return res.status(400).json({ message: 'Your cart is empty.' });
@@ -30,11 +31,14 @@ router.post('/', requireAuth, async (req, res) => {
       lineItems.push({ product, quantity: item.quantity });
     }
 
-    // Insert order with 'pending' status
+    // Set order status based on payment method. 
+    // COD orders are immediately 'processing' instead of 'pending'.
+    const orderStatus = paymentMethod === 'COD' ? 'processing' : 'pending';
+
     const [orderResult] = await conn.query(
       `INSERT INTO orders (user_id, status, total, shipping_name, shipping_address, shipping_city, shipping_zip)
-       VALUES (?, 'pending', ?, ?, ?, ?, ?)`,
-      [req.user.id, total.toFixed(2), shipping?.name, shipping?.address, shipping?.city, shipping?.zip]
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [req.user.id, orderStatus, total.toFixed(2), shipping?.name, shipping?.address, shipping?.city, shipping?.zip]
     );
 
     // Insert order items and reserve stock
@@ -49,11 +53,13 @@ router.post('/', requireAuth, async (req, res) => {
 
     await conn.commit();
     
-    // Return order details to frontend so it can initiate the payment gateway
+    // Return order details to frontend
     res.status(201).json({ 
       orderId: orderResult.insertId, 
       total: total.toFixed(2),
-      status: 'pending' 
+      status: orderStatus,
+      paymentMethod: paymentMethod,
+      message: 'Order placed successfully!'
     });
     
   } catch (err) {
@@ -65,41 +71,7 @@ router.post('/', requireAuth, async (req, res) => {
   }
 });
 
-// 2. Verify payment and update status to 'paid'
-router.post('/verify', requireAuth, async (req, res) => {
-  const { orderId, paymentId, signature } = req.body; 
-
-  if (!orderId) {
-    return res.status(400).json({ message: 'Order ID is required.' });
-  }
-
-  try {
-    // -------------------------------------------------------------------------
-    // TODO: Add your payment gateway verification logic here (e.g., Razorpay)
-    // Example: verify signature hash matches the one sent by Razorpay
-    // if (!isValidSignature) {
-    //   return res.status(400).json({ message: 'Invalid payment signature.' });
-    // }
-    // -------------------------------------------------------------------------
-
-    // Update order status to paid in the database
-    const [result] = await pool.query(
-      'UPDATE orders SET status = "paid" WHERE id = ? AND user_id = ?',
-      [orderId, req.user.id]
-    );
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Order not found or unauthorized.' });
-    }
-
-    res.json({ message: 'Payment verified successfully. Order is now paid.', orderId });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Payment verification failed.' });
-  }
-});
-
-// 3. Order history for the logged-in user
+// 2. Order history for the logged-in user
 router.get('/mine', requireAuth, async (req, res) => {
   try {
     const [orders] = await pool.query(
