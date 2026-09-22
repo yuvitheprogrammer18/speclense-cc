@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — Speclense</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav-row">
+    <a href="index.html" class="brand">Speclense<span class="dot">.</span></a>
+    <nav class="nav-links"><a href="index.html">Home</a><a href="shop.html">Shop</a></nav>
+    <div class="nav-actions">
+      <span id="nav-auth-slot"></span>
+      <a href="cart.html" class="icon-link">Cart <span class="cart-count" id="cart-count">0</span></a>
+    </div>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head"><h2>Checkout</h2></div>
+
+    <div id="checkout-auth-notice" class="form-msg show error" style="display:none;margin-bottom:24px;">
+      You'll need to log in to complete your order — your cart will be waiting for you.
+    </div>
+
+    <div class="cart-layout" id="checkout-layout">
+      <form id="checkout-form">
+        <div class="field"><label for="ship-name">Full name</label><input type="text" id="ship-name" required></div>
+        <div class="field"><label for="ship-address">Address</label><input type="text" id="ship-address" required></div>
+        <div style="display:flex;gap:16px;">
+          <div class="field" style="flex:1;"><label for="ship-city">City</label><input type="text" id="ship-city" required></div>
+          <div class="field" style="width:140px;"><label for="ship-zip">ZIP</label><input type="text" id="ship-zip" required></div>
+        </div>
+        <div id="form-msg" class="form-msg"></div>
+        <button type="submit" class="btn btn-primary btn-block">Place order</button>
+      </form>
+      <div class="summary-card">
+        <div id="checkout-summary"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container"><div class="footer-bottom"><span>© 2026 Speclense.</span><a href="cart.html">← Back to cart</a></div></div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/cart.js"></script>
+</body>
+</html>

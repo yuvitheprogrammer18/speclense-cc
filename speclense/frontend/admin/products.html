@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products — Speclense Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="admin-page">
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="brand">Speclense<span class="dot">.</span></div>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="products.html" class="active">Products</a>
+    <a href="orders.html">Orders</a>
+    <a href="users.html">Customers</a>
+    <a href="../index.html">View storefront</a>
+  </aside>
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 style="font-size:1.6rem;">Products</h1>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <button id="add-product-btn" class="btn btn-primary btn-sm">+ Add product</button>
+        <span id="admin-name" style="font-weight:600;"></span>
+        <button id="admin-logout" class="btn btn-outline btn-sm">Log out</button>
+      </div>
+    </div>
+
+    <table id="admin-product-table">
+      <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="product-modal">
+  <div class="modal-card">
+    <h2 id="modal-title">Add product</h2>
+    <form id="product-form">
+      <input type="hidden" id="p-id">
+      <div class="field"><label>Name</label><input type="text" id="p-name" required></div>
+      <div class="field"><label>Category</label><select id="p-category"></select></div>
+      <div class="field"><label>Description</label><textarea id="p-description" rows="3"></textarea></div>
+      <div style="display:flex;gap:14px;">
+        <div class="field" style="flex:1;"><label>Price ($)</label><input type="number" step="0.01" id="p-price" required></div>
+        <div class="field" style="flex:1;"><label>Compare-at price</label><input type="number" step="0.01" id="p-compare"></div>
+      </div>
+      <div style="display:flex;gap:14px;">
+        <div class="field" style="flex:1;"><label>Frame color</label><input type="text" id="p-frame"></div>
+        <div class="field" style="flex:1;"><label>Lens tint</label><input type="text" id="p-tint"></div>
+      </div>
+      <div style="display:flex;gap:14px;">
+        <div class="field" style="flex:1;"><label>Stock</label><input type="number" id="p-stock" required></div>
+        <div class="field" style="flex:2;"><label>Image URL</label><input type="text" id="p-image" placeholder="https://…"></div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;font-size:0.9rem;margin-bottom:8px;">
+        <input type="checkbox" id="p-featured"> Feature on homepage
+      </label>
+      <div class="modal-actions">
+        <button type="submit" class="btn btn-primary">Save product</button>
+        <button type="button" id="modal-cancel" class="btn btn-outline">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/admin.js"></script>
+</body>
+</html>

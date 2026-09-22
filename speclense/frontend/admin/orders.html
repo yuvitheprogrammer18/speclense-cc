@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orders — Speclense Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="admin-page">
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="brand">Speclense<span class="dot">.</span></div>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="products.html">Products</a>
+    <a href="orders.html" class="active">Orders</a>
+    <a href="users.html">Customers</a>
+    <a href="../index.html">View storefront</a>
+  </aside>
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 style="font-size:1.6rem;">Orders</h1>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <span id="admin-name" style="font-weight:600;"></span>
+        <button id="admin-logout" class="btn btn-outline btn-sm">Log out</button>
+      </div>
+    </div>
+
+    <table id="admin-order-table">
+      <thead><tr><th>Order</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </main>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speclense — Eyewear, seen clearly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav-row">
+    <a href="index.html" class="brand">Speclense<span class="dot">.</span></a>
+    <nav class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="shop.html?category=sunglasses">Sunglasses</a>
+      <a href="shop.html?category=blue-light">Blue-Light</a>
+    </nav>
+    <div class="nav-actions">
+      <span id="nav-auth-slot"></span>
+      <a href="cart.html" class="icon-link" title="Cart">Cart <span class="cart-count" id="cart-count">0</span></a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="hero-eyebrow">New season frames</div>
+      <h1>Eyewear built around how you actually see the day.</h1>
+      <p class="lede">Sunglasses, optical frames, blue-light lenses and readers — designed in-house, tinted for the way real light behaves.</p>
+      <div class="hero-cta">
+        <a href="shop.html" class="btn btn-primary">Shop all frames</a>
+        <a href="shop.html?category=sunglasses" class="btn btn-outline-light">View sunglasses</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="110" cy="100" r="78" stroke="#F4F0E6" stroke-width="3"/>
+        <circle cx="290" cy="100" r="78" stroke="#C97A3E" stroke-width="3"/>
+        <path d="M188 100 H212" stroke="#F4F0E6" stroke-width="3"/>
+        <path d="M32 92 C10 88, 4 100, 10 112" stroke="#F4F0E6" stroke-width="3"/>
+        <path d="M368 92 C390 88, 396 100, 390 112" stroke="#C97A3E" stroke-width="3"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Shop by category</h2>
+      <p>Four collections, each tuned for a different kind of light.</p>
+    </div>
+    <div class="cat-strip">
+      <a href="shop.html?category=sunglasses" class="cat-card">
+        <div class="tint-swatch" style="background:var(--amber);"></div>
+        <h3>Sunglasses</h3><span>Polarized & gradient tints</span>
+      </a>
+      <a href="shop.html?category=optical-frames" class="cat-card">
+        <div class="tint-swatch" style="background:var(--steel);"></div>
+        <h3>Optical Frames</h3><span>Ready for your prescription</span>
+      </a>
+      <a href="shop.html?category=blue-light" class="cat-card">
+        <div class="tint-swatch" style="background:var(--blue);"></div>
+        <h3>Blue-Light</h3><span>For long screen days</span>
+      </a>
+      <a href="shop.html?category=reading" class="cat-card">
+        <div class="tint-swatch" style="background:#5b4a3f;"></div>
+        <h3>Reading</h3><span>+1.5 to +2.5 magnification</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section tint-band-amber">
+  <div class="container">
+    <div class="section-head">
+      <h2>Featured this week</h2>
+      <p>A short edit of the frames people keep reordering.</p>
+    </div>
+    <div class="product-grid" id="featured-grid">
+      <p>Loading products…</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4 class="brand" style="color:#fff;">Speclense.</h4>
+        <p style="max-width:32ch;">Eyewear for sunlight, screens and everything printed in between.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <a href="shop.html?category=sunglasses">Sunglasses</a>
+        <a href="shop.html?category=optical-frames">Optical Frames</a>
+        <a href="shop.html?category=blue-light">Blue-Light</a>
+        <a href="shop.html?category=reading">Reading</a>
+      </div>
+      <div>
+        <h4>Account</h4>
+        <a href="login.html">Log in</a>
+        <a href="signup.html">Create account</a>
+        <a href="cart.html">Cart</a>
+      </div>
+      <div>
+        <h4>Admin</h4>
+        <a href="admin/login.html">Admin panel</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Speclense. Demo storefront.</span>
+      <span>Built with Node.js · MySQL · AWS-ready</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

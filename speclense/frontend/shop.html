@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop — Speclense</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav-row">
+    <a href="index.html" class="brand">Speclense<span class="dot">.</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html" class="active">Shop</a>
+      <a href="shop.html?category=sunglasses">Sunglasses</a>
+      <a href="shop.html?category=blue-light">Blue-Light</a>
+    </nav>
+    <div class="nav-actions">
+      <span id="nav-auth-slot"></span>
+      <a href="cart.html" class="icon-link" title="Cart">Cart <span class="cart-count" id="cart-count">0</span></a>
+    </div>
+  </div>
+</header>
+
+<section class="section" style="padding-bottom:0;">
+  <div class="container">
+    <div class="section-head">
+      <h2>All frames</h2>
+      <p>Filter by collection, or search for something specific.</p>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="filters-bar">
+    <div class="chip-row" id="category-chips"></div>
+    <div style="display:flex;gap:10px;">
+      <input type="text" id="search-input" placeholder="Search frames…">
+      <select id="sort-select">
+        <option value="">Newest</option>
+        <option value="price_asc">Price: low to high</option>
+        <option value="price_desc">Price: high to low</option>
+      </select>
+    </div>
+  </div>
+  <div class="product-grid" id="shop-grid" style="margin-bottom:80px;"></div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4 class="brand" style="color:#fff;">Speclense.</h4>
+        <p style="max-width:32ch;">Eyewear for sunlight, screens and everything printed in between.</p>
+      </div>
+      <div><h4>Shop</h4>
+        <a href="shop.html?category=sunglasses">Sunglasses</a>
+        <a href="shop.html?category=optical-frames">Optical Frames</a>
+        <a href="shop.html?category=blue-light">Blue-Light</a>
+        <a href="shop.html?category=reading">Reading</a>
+      </div>
+      <div><h4>Account</h4>
+        <a href="login.html">Log in</a>
+        <a href="signup.html">Create account</a>
+        <a href="cart.html">Cart</a>
+      </div>
+      <div><h4>Admin</h4><a href="admin/login.html">Admin panel</a></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Speclense. Demo storefront.</span>
+      <span>Built with Node.js · MySQL · AWS-ready</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
