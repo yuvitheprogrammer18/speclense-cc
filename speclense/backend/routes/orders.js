@@ -1,20 +1,12 @@
 const express = require('express');
-const crypto = require('crypto');
-const Razorpay = require('razorpay');
 const pool = require('../config/db');
 const { requireAuth } = require('../middleware/auth');
 
 const router = express.Router();
 
-// Initialize Razorpay
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
-
-// 1. Place an order from the cart & Generate Razorpay Order
+// 1. Place an order from the cart (Initial status: pending)
 router.post('/', requireAuth, async (req, res) => {
-  const { items, shipping } = req.body;
+  const { items, shipping } = req.body; // items: [{ productId, quantity }]
   
   if (!Array.isArray(items) || !items.length) {
     return res.status(400).json({ message: 'Your cart is empty.' });
@@ -38,7 +30,7 @@ router.post('/', requireAuth, async (req, res) => {
       lineItems.push({ product, quantity: item.quantity });
     }
 
-    // Insert order into your MariaDB with 'pending' status
+    // Insert order with 'pending' status
     const [orderResult] = await conn.query(
       `INSERT INTO orders (user_id, status, total, shipping_name, shipping_address, shipping_city, shipping_zip)
        VALUES (?, 'pending', ?, ?, ?, ?, ?)`,
@@ -55,26 +47,13 @@ router.post('/', requireAuth, async (req, res) => {
       await conn.query('UPDATE products SET stock = stock - ? WHERE id = ?', [li.quantity, li.product.id]);
     }
 
-    // --- RAZORPAY INTEGRATION ---
-    // Amount must be in the smallest currency unit (paise for INR, so multiply by 100)
-    const options = {
-      amount: Math.round(total * 100), 
-      currency: 'INR',
-      receipt: `receipt_order_${orderResult.insertId}`,
-    };
-
-    const razorpayOrder = await razorpay.orders.create(options);
-
     await conn.commit();
     
-    // Return BOTH your DB orderId and the Razorpay Order details to the frontend
+    // Return order details to frontend so it can initiate the payment gateway
     res.status(201).json({ 
       orderId: orderResult.insertId, 
       total: total.toFixed(2),
-      status: 'pending',
-      razorpayOrderId: razorpayOrder.id,
-      amount: options.amount,
-      currency: options.currency
+      status: 'pending' 
     });
     
   } catch (err) {
@@ -86,36 +65,24 @@ router.post('/', requireAuth, async (req, res) => {
   }
 });
 
-// 2. Verify Razorpay Payment Signature
+// 2. Verify payment and update status to 'paid'
 router.post('/verify', requireAuth, async (req, res) => {
-  const { 
-    orderId, // Your MariaDB order ID
-    razorpay_order_id, 
-    razorpay_payment_id, 
-    razorpay_signature 
-  } = req.body; 
+  const { orderId, paymentId, signature } = req.body; 
 
-  if (!orderId || !razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
-    return res.status(400).json({ message: 'Missing payment verification details.' });
+  if (!orderId) {
+    return res.status(400).json({ message: 'Order ID is required.' });
   }
 
   try {
-    // --- RAZORPAY SIGNATURE VERIFICATION ---
-    // Concatenate the order_id and payment_id with a pipe
-    const body = razorpay_order_id + "|" + razorpay_payment_id;
+    // -------------------------------------------------------------------------
+    // TODO: Add your payment gateway verification logic here (e.g., Razorpay)
+    // Example: verify signature hash matches the one sent by Razorpay
+    // if (!isValidSignature) {
+    //   return res.status(400).json({ message: 'Invalid payment signature.' });
+    // }
+    // -------------------------------------------------------------------------
 
-    // Generate the expected signature using your secret key
-    const expectedSignature = crypto
-      .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
-      .update(body.toString())
-      .digest('hex');
-
-    // Compare signatures
-    if (expectedSignature !== razorpay_signature) {
-      return res.status(400).json({ message: 'Invalid payment signature. Verification failed.' });
-    }
-
-    // If signature matches, update order status to paid in your database
+    // Update order status to paid in the database
     const [result] = await pool.query(
       'UPDATE orders SET status = "paid" WHERE id = ? AND user_id = ?',
       [orderId, req.user.id]
@@ -125,14 +92,14 @@ router.post('/verify', requireAuth, async (req, res) => {
       return res.status(404).json({ message: 'Order not found or unauthorized.' });
     }
 
-    res.json({ message: 'Payment verified successfully.', orderId });
+    res.json({ message: 'Payment verified successfully. Order is now paid.', orderId });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Payment verification error.' });
+    res.status(500).json({ message: 'Payment verification failed.' });
   }
 });
 
-// 3. Order history
+// 3. Order history for the logged-in user
 router.get('/mine', requireAuth, async (req, res) => {
   try {
     const [orders] = await pool.query(
