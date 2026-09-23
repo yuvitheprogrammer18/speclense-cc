@@ -29,7 +29,9 @@ function paintCartCount() {
   if (el) el.textContent = Cart.count();
 }
 
-function money(n) { return `$${Number(n).toFixed(2)}`; }
+function money(n) {
+  return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 }).format(Number(n) || 0);
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   paintCartCount();
@@ -141,7 +143,7 @@ function renderCheckoutPage(form) {
       document.getElementById('checkout-layout').innerHTML = `
         <div class="empty-state">
           <h2>Order placed 🎉</h2>
-          <p>Order #${result.orderId} — total ${money(result.total)}. A confirmation has been recorded on your account.</p>
+          <p>Order #${result.orderId} — total ${money(result.total)}, payable by <strong>Cash on Delivery</strong>. A confirmation email is on its way, and the order is recorded on your account.</p>
           <a href="account.html" class="btn btn-primary">View my orders</a>
         </div>`;
     } catch (err) {
