@@ -29,9 +29,7 @@ function paintCartCount() {
   if (el) el.textContent = Cart.count();
 }
 
-function money(n) {
-  return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 }).format(Number(n) || 0);
-}
+function money(n) { return `₹${Number(n).toFixed(2)}`; }
 
 document.addEventListener('DOMContentLoaded', () => {
   paintCartCount();
