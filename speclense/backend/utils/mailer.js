@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 
 async function sendPasswordResetEmail(toEmail, resetUrl) {
   const mail = {
-    from: process.env.SMTP_FROM || 'Speclense <no-reply@speclense.com>',
+    from: process.env.SMTP_FROM || 'Speclense <no-reply@yuvi18457@gmail.com>',
     to: toEmail,
     subject: 'Reset your Speclense password',
     html: `
